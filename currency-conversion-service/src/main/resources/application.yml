@@ -1,6 +1,12 @@
 spring:
   application:
     name: currency-conversion-service
+  cloud:
+    stream:
+      bindings:
+        consumer:
+          destination: consumer
+      default-binder: rabbit
 server:
   port: 8100
 
@@ -8,6 +14,15 @@ eureka:
   client:
     service-url:
       default-zone: http://localhost:8761/eureka
+
+#rabbitmq settings for Spring Cloud Stream to use
+#  spring:
+#    rabbitmq:
+#      host: 127.0.0.1
+#      port: 5672
+#      username: guest
+#      password: guest
+
 
 #To transfer a call through zuul api gateway
 # http://localhost:8765/{app.name}/{url}  ==>>  http://localhost:8765/currency-conversion-service/currency-conversion-feign/from/USD/to/INR/quantity/1000
