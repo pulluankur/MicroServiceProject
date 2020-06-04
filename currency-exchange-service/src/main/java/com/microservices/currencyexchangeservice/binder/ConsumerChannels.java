@@ -8,4 +8,7 @@ public interface ConsumerChannels {
     @Input(value = "consumer")
     SubscribableChannel consumer();
 
+    @Input(value = "personConsumer")
+    SubscribableChannel personConsumer();
+
 }

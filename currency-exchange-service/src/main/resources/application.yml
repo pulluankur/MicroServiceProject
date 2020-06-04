@@ -8,10 +8,31 @@ spring:
       enabled: true
   cloud:
     stream:
+      kafka.binder:
+        configuration:
+          default:
+            key.serde: org.apache.kafka.common.serialization.Serdes$StringSerde
+            value.serde: org.apache.kafka.common.serialization.Serdes$StringSerde
+            commit.interval.ms: 1000
+#          security.protocol: SASL_SSL
+#          sasl.mechanism: PLAIN
+#        jaas.loginModule: org.apache.kafka.common.security.plain.PlainLoginModule
+#        jaas.options.username: admin
+#        jaas.options.password: admin-secret
+      default:
+        contentType: application/json
       bindings:
         consumer:
-          destination: consumer
-          group: consumer-group
+          destination: topicname
+          group: namegroup
+          consumer:
+            partitioned: true
+            instanceCount: 4
+            instanceIndex: 3
+            autoRebalanceEnabled: true
+        personConsumer:
+          destination: topicperson
+          group: persongroup
       default-binder: rabbit
 server:
   port: 8000
@@ -20,3 +41,8 @@ eureka:
   client:
     service-url:
       default-zone: http://localhost:8761
+
+
+
+#spring.cloud.stream.instanceCount: 1
+#spring.cloud.stream.instanceIndex: 0

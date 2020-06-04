@@ -1,4 +1,4 @@
-package com.microservices.currencyexchangeservice.binder;
+package com.microservices.currencyconversionservice.dto;
 
 public class Person {
     private String fName;

@@ -2,10 +2,11 @@ package com.microservices.currencyexchangeservice.binder;
 
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.annotation.StreamListener;
-import org.springframework.cloud.stream.messaging.Sink;
-import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.kafka.support.KafkaHeaders;
+import org.springframework.messaging.handler.annotation.Header;
+import org.springframework.messaging.handler.annotation.Payload;
 
-@EnableBinding({Sink.class, ConsumerChannels.class})
+@EnableBinding(ConsumerChannels.class)
 public class BinderConsumer {
 
 //    @StreamListener(Sink.INPUT)
@@ -16,16 +17,22 @@ public class BinderConsumer {
 //            acknowledgment.acknowledge();
 //        }
 //    }
-
-    @StreamListener(Sink.INPUT)
-    public void handle(String name) {
-
-        System.out.println("Received sink name: " + name);
-    }
+//
+//    @StreamListener(Sink.INPUT)
+//    public void handle(String name) {
+//        System.out.println("Received sink name: " + name);
+//    }
 
     @StreamListener("consumer")
-    public void handle1(String name) {
-
-        System.out.println("Received consumer name: " + name);
+    public void handle1(String name, @Header(KafkaHeaders.RECEIVED_PARTITION_ID) int partition) {
+//        @Header(AmqpHeaders.CONSUMER_QUEUE) String queue
+        System.out.println("Received consumer name: " + name + " from: " + partition);
     }
+
+    @StreamListener("personConsumer")
+    public void personListener(@Payload Person person) {
+
+        System.out.println("Received person details: " + person);
+    }
+
 }

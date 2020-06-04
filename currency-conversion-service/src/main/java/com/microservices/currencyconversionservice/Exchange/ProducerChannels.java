@@ -5,7 +5,10 @@ import org.springframework.messaging.MessageChannel;
 
 public interface ProducerChannels {
 
-    @Output(value = "consumer")
-    MessageChannel consumer();
+    @Output(value = "producer")
+    MessageChannel producer();
+
+    @Output(value = "personProducer")
+    MessageChannel personProducer();
 
 }

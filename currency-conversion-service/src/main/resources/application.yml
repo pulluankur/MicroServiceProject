@@ -3,9 +3,32 @@ spring:
     name: currency-conversion-service
   cloud:
     stream:
+      kafka.binder:
+        auto-add-partitions: true
+        configuration:
+          default:
+            key.serde: org.apache.kafka.common.serialization.Serdes$StringSerde
+            value.serde: org.apache.kafka.common.serialization.Serdes$StringSerde
+          commit.interval.ms: 1000
+#          security.protocol: SASL_SSL
+#          sasl.mechanism: PLAIN
+#        jaas.loginModule: org.apache.kafka.common.security.plain.PlainLoginModule
+#        jaas.options.username: admin
+#        jaas.options.password: admin-secret
+      default:
+        contentType: application/json
       bindings:
-        consumer:
-          destination: consumer
+        producer:
+          destination: topicname
+          producer:
+#            partitioned: true
+            partition-key-expression: headers['partitionKey']
+            partition-count: 4
+            replication-factor: 3
+            required-groups:
+              - myGroup
+        personProducer:
+          destination: topicperson
       default-binder: rabbit
 server:
   port: 8100
@@ -22,6 +45,17 @@ eureka:
 #      port: 5672
 #      username: guest
 #      password: guest
+
+
+
+
+
+
+
+
+
+
+
 
 
 #To transfer a call through zuul api gateway
