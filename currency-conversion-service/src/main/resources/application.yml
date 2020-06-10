@@ -5,31 +5,36 @@ spring:
     stream:
       kafka.binder:
         auto-add-partitions: true
+        auto-create-topics: true
         configuration:
           default:
             key.serde: org.apache.kafka.common.serialization.Serdes$StringSerde
             value.serde: org.apache.kafka.common.serialization.Serdes$StringSerde
           commit.interval.ms: 1000
-#          security.protocol: SASL_SSL
-#          sasl.mechanism: PLAIN
-#        jaas.loginModule: org.apache.kafka.common.security.plain.PlainLoginModule
-#        jaas.options.username: admin
-#        jaas.options.password: admin-secret
+          #security.protocol: SASL_SSL
+          #sasl.mechanism: PLAIN
+        #jaas.loginModule: org.apache.kafka.common.security.plain.PlainLoginModule
+        #jaas.options.username: admin
+        #jaas.options.password: admin-secret
       default:
         contentType: application/json
       bindings:
         producer:
           destination: topicname
           producer:
-#            partitioned: true
-            partition-key-expression: headers['partitionKey']
+            partition-key-expression: headers['partitionKey'] #payload string length - 1 is the partition where it will get stored
             partition-count: 4
-            replication-factor: 3
-            required-groups:
-              - myGroup
+            replication-factor: 1
+            required-groups: myGroup #only applicable for rabbitMQ
         personProducer:
           destination: topicperson
-      default-binder: rabbit
+          producer:
+            partition-key-expression: headers['partitionKey'] #payload string length - 1 is the partition where it will get stored
+            partition-count: 4
+            replication-factor: 1
+            required-groups: myGroup1 #only applicable for rabbitMQ
+      default-binder: kafka
+
 server:
   port: 8100
 

@@ -17,11 +17,6 @@ public class BinderConsumer {
 //            acknowledgment.acknowledge();
 //        }
 //    }
-//
-//    @StreamListener(Sink.INPUT)
-//    public void handle(String name) {
-//        System.out.println("Received sink name: " + name);
-//    }
 
     @StreamListener("consumer")
     public void handle1(String name, @Header(KafkaHeaders.RECEIVED_PARTITION_ID) int partition) {
@@ -30,9 +25,9 @@ public class BinderConsumer {
     }
 
     @StreamListener("personConsumer")
-    public void personListener(@Payload Person person) {
+    public void personListener(@Payload Person person, @Header(KafkaHeaders.RECEIVED_PARTITION_ID) int partition) {
 
-        System.out.println("Received person details: " + person);
+        System.out.println("Received person details: " + person + " from: " + partition);
     }
 
 }

@@ -31,7 +31,7 @@ public class Producer {
 
     @PostMapping(value = "/person")
     public Person publishPerson(@RequestBody Person person) {
-        Message<Person> build = MessageBuilder.withPayload(person).build();
+        Message<Person> build = MessageBuilder.withPayload(person).setHeader("partitionKey",person).build();
         this.personChannel.send(build);
         return person;
     }
